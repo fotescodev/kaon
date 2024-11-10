@@ -2,7 +2,7 @@
 
 
 
-<figure><img src="../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (2).png" alt=""><figcaption></figcaption></figure>
 
 When a user sends a request from MetaMask or another EVM wallet, it undergoes a transformation process to ensure compatibility with the Kaon ecosystem:
 

@@ -2,7 +2,7 @@
 
 In Kaon, we anticipate that users may want to utilize BTC in scenarios that are only implementable using Solidity Smart Contracts. To facilitate this, our chain supports a comprehensive BTC locking and mirroring process.
 
-<figure><img src="../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (4).png" alt=""><figcaption></figcaption></figure>
 
 The user makes a view call to the Kaon contract (at address 0x0…1, where addresses 0x0…1 to 0x0…1000 are reserved). It sends a lock script of P2PSH type for users to use it to lock BTC in the Bitcoin Network.
 

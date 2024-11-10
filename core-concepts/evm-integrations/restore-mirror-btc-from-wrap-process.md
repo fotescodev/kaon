@@ -1,6 +1,6 @@
 # Restore Mirror BTC From Wrap Process
 
-<figure><img src="../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (6).png" alt=""><figcaption></figcaption></figure>
 
 1. The user initiates the process by sending the ERC20 tokens (which represent the wrapped Mirrored BTC) to a designated smart contract on the Kaon chain.
 2. The smart contract recognizes the transaction and identifies the corresponding voucher created during the initial wrapping process. This voucher contains the necessary details to facilitate the restoration.

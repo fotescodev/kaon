@@ -1,6 +1,6 @@
 # BTC Withdrawal
 
-<figure><img src="../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image.png" alt=""><figcaption></figcaption></figure>
 
 1. User sends tokens to the contract where they initially received the P2PSH lock.
 2. Ensure the sender is the native BTC sender.

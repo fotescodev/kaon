@@ -1,6 +1,6 @@
 # Mirrored BTC Transfer To EVM Chain
 
-<figure><img src="../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (5).png" alt=""><figcaption></figcaption></figure>
 
 1. The transfer process is initiated by the user.
 2. Upon recognition of the transfer, the Mirrored BTC is moved to the network’s storage. This storage is part of the cross-chain pool that manages the creation of new vouchers for cross-chain transactions.

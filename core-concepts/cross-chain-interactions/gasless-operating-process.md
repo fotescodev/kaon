@@ -1,6 +1,6 @@
 # Gasless Operating Process
 
-<figure><img src="../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (7).png" alt=""><figcaption></figcaption></figure>
 
 1. The user initiates a transaction to transfer some tokens without holding the native gas token for transaction fees.
 2. A portion of the transaction fee is paid using the tokens being transferred. In this case, some tokens are converted to Kaon tokens.

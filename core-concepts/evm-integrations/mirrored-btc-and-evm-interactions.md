@@ -3,7 +3,7 @@
 It is crucial to understand the unique properties of Mirrored BTC (mBTC), it is basically dual-record token, where BRC standard token part keep transaction records for specific tokens, while ERC metadata facilitates interaction with EVM smart contracts.\
 
 
-<figure><img src="../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
+<figure><img src="../../.gitbook/assets/image (1).png" alt=""><figcaption></figcaption></figure>
 
 1. The user sends Mirrored BTC to a designated smart contract.
 2. The transaction first enters the BRC20 section, where the Mirrored BTC verifies its data and balance.
