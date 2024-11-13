@@ -1,7 +1,5 @@
 # Architecture View
 
-DISCLAMER: This diagram is temporary and will be updated at a later point in time. Diagram descriptions below are general and will also be extended at a later date.
-
 {% code overflow="wrap" fullWidth="false" %}
 ```mermaid
 %% Set default font style to Arial for compatibility
