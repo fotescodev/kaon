@@ -5,7 +5,7 @@
 * [What is Kaon?](README.md)
 * [Why Kaon?](introduction/why-kaon.md)
 * [Who Should Use Kaon?](introduction/who-should-use-kaon.md)
-* [How does it work?](introduction/how-does-it-work.md)
+* [How Does it Work?](introduction/how-does-it-work.md)
 * [Built for Bitcoin Developers](introduction/built-for-bitcoin-developers.md)
 * [Key Innovations](introduction/key-innovations.md)
 
