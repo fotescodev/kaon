@@ -1,6 +1,6 @@
 # Kaon Chain Consensus (dPoS)
 
-Kaon Chain employs a Delegated Proof of Stake (dPoS) consensus mechanism, a Bitcoin-family consensus model based on stakes and delegates. This forms a two-level network comprising Master Nodes, Validators, and other nodes. Our implementation extends the traditional model to manage whitelists for Galaxy consensus.
+Kaon Chain employs a Delegated Proof of Stake (dPoS) consensus mechanism, a Bitcoin-family consensus model based on stakes and delegates. This forms a two-level network comprising Master Nodes, Validators, and other nodes. Our implementation extends the traditional model to manage whitelists for BFT consensus.
 
 <figure><img src="../../.gitbook/assets/DPOS.png" alt=""><figcaption></figcaption></figure>
 

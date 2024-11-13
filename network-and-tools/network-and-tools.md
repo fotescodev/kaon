@@ -29,7 +29,7 @@ Technical Architecture
 
 * System design and component interaction. Include an architectural diagram here.
 * Diagrams illustrating key processes (mBTC locking, withdrawals, etc.).
-* Consensus mechanisms (dPoS, BFT, Galaxy).
+* Consensus mechanisms (dPoS, BFT, BFT).
 
 #### Development Tools
 

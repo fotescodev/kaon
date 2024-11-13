@@ -1,6 +1,6 @@
 # Cross-Chain BFT Consensus
 
-Galaxy is a cross-chain consensus mechanism based on Store Groups, Shamir polynomials, and the composition of one-time TSS (Threshold Signature Scheme) signatures per each round. It is utilized by Kaon in a cross-chain context and is managed by the chain’s dPoS.
+BFT is a cross-chain consensus mechanism based on Store Groups, Shamir polynomials, and the composition of one-time TSS (Threshold Signature Scheme) signatures per each round. It is utilized by Kaon in a cross-chain context and is managed by the chain’s dPoS.
 
 1. **User Interaction**:
    * The user calls a view function `no` on the Kaon contract to obtain an address for the P2SH (Pay-to-Script-Hash) lock script on the Bitcoin Network from the current round of sMPC.

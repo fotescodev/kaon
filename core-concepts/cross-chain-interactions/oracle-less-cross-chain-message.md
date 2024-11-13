@@ -1,6 +1,6 @@
 # Oracle-less Cross-chain Message
 
-The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and Galaxy consensus.
+The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and BFT consensus.
 
 * **Threshold Signatures**: This process leverages threshold signatures from the current round, where consensus is achieved when the transaction is signed by the required number of actors.
 * **Store Groups**: The process includes Store Groups with Cross-chain Validators (Collator Nodes), formed based on a whitelist provided by dPoS Epoch Validators. Each round, a slot leader is selected.

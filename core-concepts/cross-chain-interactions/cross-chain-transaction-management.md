@@ -2,7 +2,7 @@
 
 #### Oracle-less Cross-chain Message Processing Process <a href="#oracle-less-cross-chain-message-processing-process" id="oracle-less-cross-chain-message-processing-process"></a>
 
-The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and Galaxy consensus.\
+The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and BFT consensus.\
 
 
 {% hint style="info" %}

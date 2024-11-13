@@ -48,15 +48,15 @@ The following diagrams for each process provide a visual representation of Kaon�
 
 **Cross-chain Validator or Collator Node:**
 
-* After embedding Bitcoin Core, these nodes must be added to the Store Groups of Galaxy to participate in sMPC (Secure Multi-Party Computation) rounds.
-* To do this, they must stake an additional amount of KAON tokens in the Galaxy consensus to become a Collator Node or a Cross-chain Validator.
+* After embedding Bitcoin Core, these nodes must be added to the Store Groups of BFT to participate in sMPC (Secure Multi-Party Computation) rounds.
+* To do this, they must stake an additional amount of KAON tokens in the BFT consensus to become a Collator Node or a Cross-chain Validator.
 * The exact amount to be staked is governed by the chain consensus, similar to how gas limits and gas prices are managed by consensus.
 
 ***
 
 ### Kaon Chain Consensus (dPoS)
 
-Kaon Chain employs a Delegated Proof of Stake (dPoS) consensus mechanism, a Bitcoin-family consensus model based on stakes and delegates. This forms a two-level network comprising Master Nodes, Validators, and other nodes. Our implementation extends the traditional model to manage whitelists for Galaxy consensus.
+Kaon Chain employs a Delegated Proof of Stake (dPoS) consensus mechanism, a Bitcoin-family consensus model based on stakes and delegates. This forms a two-level network comprising Master Nodes, Validators, and other nodes. Our implementation extends the traditional model to manage whitelists for BFT consensus.
 
 #### Epochs and Super-Cycles:
 
@@ -90,9 +90,9 @@ Kaon Chain employs a Delegated Proof of Stake (dPoS) consensus mechanism, a Bitc
 
 ***
 
-### Kaon Cross-Chain Consensus Galaxy
+### Kaon Cross-Chain Consensus BFT
 
-Galaxy is a cross-chain consensus mechanism based on Store Groups, Shamir polynomials, and the composition of one-time TSS (Threshold Signature Scheme) signatures per each round. It is utilized by Kaon in a cross-chain context and is managed by the chain’s dPoS.
+BFT is a cross-chain consensus mechanism based on Store Groups, Shamir polynomials, and the composition of one-time TSS (Threshold Signature Scheme) signatures per each round. It is utilized by Kaon in a cross-chain context and is managed by the chain’s dPoS.
 
 1. **User Interaction**:
    * The user calls a view function `no` on the Kaon contract to obtain an address for the P2SH (Pay-to-Script-Hash) lock script on the Bitcoin Network from the current round of sMPC.
@@ -133,7 +133,7 @@ Galaxy is a cross-chain consensus mechanism based on Store Groups, Shamir polyno
 
 ### Oracle-less Cross-chain Message Processing Process
 
-The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and Galaxy consensus.
+The relay process in Kaon's cross-chain messaging does not utilize oracles, as the responsible nodes are legitimate parts of another chain. These nodes bear the responsibility for the process, and they manage fees and rewards within the dPoS and BFT consensus.
 
 * **Threshold Signatures**: This process leverages threshold signatures from the current round, where consensus is achieved when the transaction is signed by the required number of actors.
 * **Store Groups**: The process includes Store Groups with Cross-chain Validators (Collator Nodes), formed based on a whitelist provided by dPoS Epoch Validators. Each round, a slot leader is selected.
@@ -355,8 +355,8 @@ When a user sends a request from MetaMask or another EVM wallet, it undergoes a 
    * Participants can opt for cold staking, which allows them to stake tokens without having them online.
 4. **Dynamic Validation**:
    * The validator set can dynamically adjust to changes in validator participation, such as new validators joining or existing validators leaving.
-5. **Galaxy Consensus Role**:
-   * The Galaxy consensus mechanism works in tandem with the dPoS framework to validate transactions and produce blocks.
+5. **BFT Consensus Role**:
+   * The BFT consensus mechanism works in tandem with the dPoS framework to validate transactions and produce blocks.
 
 ***
 
