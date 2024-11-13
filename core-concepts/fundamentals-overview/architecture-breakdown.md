@@ -1,6 +1,9 @@
 # Architecture View
 
-{% include "../../.gitbook/includes/architecture-mermaid.md" %}
+```mermaid
+```
+
+
 
 The architecture is designed to facilitate secure and deterministic cross-chain operations between the Bitcoin network and Kaon's Consensus Layer. At its core is the **Consensus Layer**, an L1 system providing Byzantine BFT by randomly selecting and rotating validators through epochs. Each **Epoch** determines a new set of validators, ensuring a dynamic yet deterministic participant pool.
 
