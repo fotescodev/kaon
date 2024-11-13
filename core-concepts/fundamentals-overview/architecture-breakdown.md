@@ -1,5 +1,4 @@
 # Architecture Overview
-DISCLAMER: This diagram is temporary and will be updated at a later point in time. Diagram descriptions below are general and will also be extended at a later date.
 ```mermaid
 %% Set default font style to Arial for compatibility
 %% Use font-size and color to ensure text displays correctly in PowerPoint
@@ -71,7 +70,6 @@ flowchart RL
     t3:::Ash
     t4:::Ash
     classDef Ash stroke-width:1px, stroke-dasharray:none, stroke:#999999, fill:#EEEEEE, color:#000000, font-family:Arial, font-size:14px
-
 ```
 The architecture is designed to facilitate secure and deterministic cross-chain operations between the Bitcoin network and Kaon's Consensus Layer. At its core is the **Consensus Layer**, an L1 system providing Byzantine BFT by randomly selecting and rotating validators through epochs. Each **Epoch** determines a new set of validators, ensuring a dynamic yet deterministic participant pool.
 
