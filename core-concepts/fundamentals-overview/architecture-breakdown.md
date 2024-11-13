@@ -1,9 +1,6 @@
 # Architecture View
 
-```markup
-%% Set default font style to Arial for compatibility
-%% Use font-size and color to ensure text displays correctly in PowerPoint
-
+```mermaid
 flowchart RL
  subgraph s3[" "]
     direction TB
