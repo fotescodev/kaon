@@ -1,5 +1,8 @@
-# Architecture Overview
+# Architecture View
+
 DISCLAMER: This diagram is temporary and will be updated at a later point in time. Diagram descriptions below are general and will also be extended at a later date.
+
+{% code overflow="wrap" fullWidth="false" %}
 ```mermaid
 %% Set default font style to Arial for compatibility
 %% Use font-size and color to ensure text displays correctly in PowerPoint
@@ -73,12 +76,14 @@ flowchart RL
     classDef Ash stroke-width:1px, stroke-dasharray:none, stroke:#999999, fill:#EEEEEE, color:#000000, font-family:Arial, font-size:14px
 
 ```
+{% endcode %}
+
 The architecture is designed to facilitate secure and deterministic cross-chain operations between the Bitcoin network and Kaon's Consensus Layer. At its core is the **Consensus Layer**, an L1 system providing Byzantine BFT by randomly selecting and rotating validators through epochs. Each **Epoch** determines a new set of validators, ensuring a dynamic yet deterministic participant pool.
 
 Validators are organized into **sMPC Groups** (secure Multi-Party Computation groups), which are coordinated sets of nodes responsible for collectively producing threshold signatures and managing cross-chain operations. These groups have specific roles:
 
-- **Validator Groups**: Maintain locks over received BTC and can send it, but only after approval from the corresponding Witness Group.
-- **Witness Groups**: Approve the release of locked BTC or mark it as corrupt.
+* **Validator Groups**: Maintain locks over received BTC and can send it, but only after approval from the corresponding Witness Group.
+* **Witness Groups**: Approve the release of locked BTC or mark it as corrupt.
 
 Individual nodes within these groups are called **sMPC Participants**. They hold key shares, participate in collective signing processes, and monitor network transactions for their assigned group.
 
@@ -92,11 +97,11 @@ Epoch management is a collaborative effort between the Consensus Layer and the B
 
 The interactions between components are as follows:
 
-- The **Node Interface** provides to the **Cross Chain Mempool** utility to detect transactions' state.
-- **sMPC Participants** broadcast mirrored transactions through the **Node Interface**.
-- The **Node Interface** processes confirmed transactions with specific taproot signature with message "KAON" on its first leaf and interacts through the **Cross Chain Mempool** with sMPC Groups to ensure the correctness of the process state.
-- The **Cross Chain Mempool** interacts with sMPC Groups to receive prepared and signed mirrored transactions for broadcasting.
-- **sMPC Groups** represents collaboration of its sMPC Participants to produce invoice addresses for peg-in transactions and sign mirrored transactions using PBST standard.
-- The **Consensus Layer** works with the BFT Consensus mechanism to switch epochs, form new participant lists, resolve incidents, and apply judgments via slashing.
+* The **Node Interface** provides to the **Cross Chain Mempool** utility to detect transactions' state.
+* **sMPC Participants** broadcast mirrored transactions through the **Node Interface**.
+* The **Node Interface** processes confirmed transactions with specific taproot signature with message "KAON" on its first leaf and interacts through the **Cross Chain Mempool** with sMPC Groups to ensure the correctness of the process state.
+* The **Cross Chain Mempool** interacts with sMPC Groups to receive prepared and signed mirrored transactions for broadcasting.
+* **sMPC Groups** represents collaboration of its sMPC Participants to produce invoice addresses for peg-in transactions and sign mirrored transactions using PBST standard.
+* The **Consensus Layer** works with the BFT Consensus mechanism to switch epochs, form new participant lists, resolve incidents, and apply judgments via slashing.
 
 Overall, the architecture is designed to handle cross-chain operations securely, transparently and uncontrollable. Through the coordinated efforts of sMPC Groups, deterministic transaction management, and a resilient consensus mechanism, the Kaon Network ensures efficient, continuous and secure interactions with the Bitcoin Network.
