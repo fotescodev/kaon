@@ -20,6 +20,7 @@
 * [Fundamentals Overview](core-concepts/fundamentals-overview/README.md)
   * [Unifying Bitcoin and Ethereum(EVM)](core-concepts/fundamentals-overview/unifying-bitcoin-and-ethereum-evm.md)
   * [Architecture View](core-concepts/fundamentals-overview/architecture-breakdown.md)
+* [Page](core-concepts/page.md)
 * [Cross-Chain Interactions](core-concepts/cross-chain-interactions/README.md)
   * [Bridge-less Token Transfers](core-concepts/cross-chain-interactions/bridge-less-token-transfers.md)
   * [Oracle-less Cross-chain Message](core-concepts/cross-chain-interactions/oracle-less-cross-chain-message.md)

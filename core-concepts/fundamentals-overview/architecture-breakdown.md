@@ -1,4 +1,8 @@
-# Sequence diagrams
+---
+hidden: true
+---
+
+# Architecture View
 
 > A Sequence diagram is an interaction diagram that shows how processes operate with one another and in what order.
 
@@ -65,10 +69,7 @@ flowchart RL
 
 ### Participants
 
-The participants can be defined implicitly as in the first example on this page. The participants or actors are
-rendered in order of appearance in the diagram source text. Sometimes you might want to show the participants in a
-different order than how they appear in the first message. It is possible to specify the actor's order of
-appearance by doing the following:
+The participants can be defined implicitly as in the first example on this page. The participants or actors are rendered in order of appearance in the diagram source text. Sometimes you might want to show the participants in a different order than how they appear in the first message. It is possible to specify the actor's order of appearance by doing the following:
 
 ```mermaid
 sequenceDiagram
@@ -100,15 +101,14 @@ Messages can be of two displayed either solid or with a dotted line.
 
 There are six types of arrows currently supported:
 
-Type | Description
----  | ---
-->   | Solid line without arrow
--->  | Dotted line  without arrow
-->>  | Solid line with arrowhead
--->> | Dotted line  with arrowhead
--x   | Solid line with a cross at the end (async)
---x  | Dotted line with a cross at the end (async)
-
+| Type | Description                                 |
+| ---- | ------------------------------------------- |
+| ->   | Solid line without arrow                    |
+| -->  | Dotted line without arrow                   |
+| ->>  | Solid line with arrowhead                   |
+| -->> | Dotted line with arrowhead                  |
+| -x   | Solid line with a cross at the end (async)  |
+| --x  | Dotted line with a cross at the end (async) |
 
 ## Activations
 
@@ -140,11 +140,9 @@ sequenceDiagram
     John-->>-Alice: I feel great!
 ```
 
-
 ## Notes
 
-It is possible to add notes to a sequence diagram. This is done by the notation
-Note [ right of | left of | over ] [Actor]: Text in note content
+It is possible to add notes to a sequence diagram. This is done by the notation Note \[ right of | left of | over ] \[Actor]: Text in note content
 
 See the example below:
 
@@ -161,7 +159,6 @@ sequenceDiagram
     Alice->John: Hello John, how are you?
     Note over Alice,John: A typical interaction
 ```
-
 
 ## Loops
 
@@ -182,7 +179,6 @@ sequenceDiagram
         John-->Alice: Great!
     end
 ```
-
 
 ## Alt
 
@@ -219,31 +215,28 @@ sequenceDiagram
     end
 ```
 
-
 ## Styling
 
-Styling of the a sequence diagram is done by defining a number of css classes.  During rendering these classes are extracted from the
+Styling of the a sequence diagram is done by defining a number of css classes. During rendering these classes are extracted from the
 
 ### Classes used
 
-Class        | Description
----          | ---
-actor        | Style for the actor box at the top of the diagram.
-text.actor   | Styles for text in the actor box at the top of the diagram.
-actor-line   | The vertical line for an actor.
-messageLine0 | Styles for the solid message line.
-messageLine1 | Styles for the dotted message line.
-messageText  | Defines styles for the text on the message arrows.
-labelBox     | Defines styles label to left in a loop.
-labelText    | Styles for the text in label for loops.
-loopText     | Styles for the text in the loop box.
-loopLine     | Defines styles for the lines in the loop box.
-note         | Styles for the note box.
-noteText     | Styles for the text on in the note boxes.
-
+| Class        | Description                                                 |
+| ------------ | ----------------------------------------------------------- |
+| actor        | Style for the actor box at the top of the diagram.          |
+| text.actor   | Styles for text in the actor box at the top of the diagram. |
+| actor-line   | The vertical line for an actor.                             |
+| messageLine0 | Styles for the solid message line.                          |
+| messageLine1 | Styles for the dotted message line.                         |
+| messageText  | Defines styles for the text on the message arrows.          |
+| labelBox     | Defines styles label to left in a loop.                     |
+| labelText    | Styles for the text in label for loops.                     |
+| loopText     | Styles for the text in the loop box.                        |
+| loopLine     | Defines styles for the lines in the loop box.               |
+| note         | Styles for the note box.                                    |
+| noteText     | Styles for the text on in the note boxes.                   |
 
 ### Sample stylesheet
-
 
 ```css
 body {
@@ -327,14 +320,11 @@ text.actor {
 }
 ```
 
-
 ## Configuration
 
 Is it possible to adjust the margins for rendering the sequence diagram.
 
-This is done by defining `mermaid.sequenceConfig` or by the CLI to use a json file with the configuration.
-How to use the CLI is described in the [mermaidCLI](mermaidCLI.html) page.
-`mermaid.sequenceConfig` can be set to a JSON string with config parameters or the corresponding object.
+This is done by defining `mermaid.sequenceConfig` or by the CLI to use a json file with the configuration. How to use the CLI is described in the [mermaidCLI](mermaidCLI.html) page. `mermaid.sequenceConfig` can be set to a JSON string with config parameters or the corresponding object.
 
 ```javascript
 mermaid.sequenceConfig = {
@@ -349,7 +339,7 @@ mermaid.sequenceConfig = {
 
 ### Possible configuration params:
 
-Param | Description | Default value
---- | --- | ---
-mirrorActor | Turns on/off the rendering of actors below the diagram as well as above it | false
-bottomMarginAdj | Adjusts how far down the graph ended. Wide borders styles with css could generate unwantewd clipping which is why this config param exists. | 1
+| Param           | Description                                                                                                                                 | Default value |
+| --------------- | ------------------------------------------------------------------------------------------------------------------------------------------- | ------------- |
+| mirrorActor     | Turns on/off the rendering of actors below the diagram as well as above it                                                                  | false         |
+| bottomMarginAdj | Adjusts how far down the graph ended. Wide borders styles with css could generate unwantewd clipping which is why this config param exists. | 1             |
