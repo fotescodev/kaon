@@ -44,6 +44,7 @@
 ## NETWORK & TOOLS
 
 * [Kaon Testnet](network-and-tools/kaon-testnet.md)
+* [Kaon CLI](network-and-tools/kaon-cli.md)
 * [Network and Tools](network-and-tools/network-and-tools.md)
 * [Deployed Contracts](network-and-tools/deployed-contracts.md)
 
