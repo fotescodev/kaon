@@ -6,6 +6,7 @@
 * [Why Kaon?](introduction/why-kaon.md)
 * [Who Should Use Kaon?](introduction/who-should-use-kaon.md)
 * [How Does it Work?](introduction/how-does-it-work.md)
+* [Terminology](introduction/terminology.md)
 * [Built for Bitcoin Developers](introduction/built-for-bitcoin-developers.md)
 * [Key Innovations](introduction/key-innovations.md)
 
@@ -20,7 +21,6 @@
 * [Fundamentals Overview](core-concepts/fundamentals-overview/README.md)
   * [Unifying Bitcoin and Ethereum(EVM)](core-concepts/fundamentals-overview/unifying-bitcoin-and-ethereum-evm.md)
   * [Architecture View](core-concepts/fundamentals-overview/architecture-breakdown.md)
-* [Page](core-concepts/page.md)
 * [Cross-Chain Interactions](core-concepts/cross-chain-interactions/README.md)
   * [Bridge-less Token Transfers](core-concepts/cross-chain-interactions/bridge-less-token-transfers.md)
   * [Oracle-less Cross-chain Message](core-concepts/cross-chain-interactions/oracle-less-cross-chain-message.md)
@@ -39,7 +39,6 @@
   * [Kaon Chain Consensus (dPoS)](core-concepts/consensus-mechanisms/kaon-chain-consensus-dpos.md)
   * [Cross-Chain BFT Consensus](core-concepts/consensus-mechanisms/cross-chain-bft-consensus.md)
   * [Slashing Incidence Process](core-concepts/consensus-mechanisms/slashing-incidence-process.md)
-* [Terminology](core-concepts/terminology.md)
 * [Technical Approach \[DRAFT\]](core-concepts/technical-approach-draft.md)
 
 ## NETWORK & TOOLS

@@ -2,11 +2,12 @@
 title: Architecture Mermaid
 ---
 
-<pre class="language-mermaid"><code class="lang-mermaid"><strong>flowchart RL
-</strong> subgraph s3[" "]
+```mermaid
+flowchart RL
+ subgraph s3[" "]
     direction TB
-<strong>        BTC["Bitcoin"]
-</strong>        CL["Consensus&#x3C;br /> Layer"]
+        BTC["Bitcoin"]
+        CL["Consensus<br /> Layer"]
  end
  style BTC fill:transparent,stroke:#F7931A,font-family:Arial,font-size:14px
  style CL fill:transparent,stroke:#000000,font-family:Arial,font-size:14px
@@ -23,7 +24,7 @@ title: Architecture Mermaid
     direction TB
         n4["Crosschain Mempool"]
         s2
-        n1["Verifies data accuracy&#x3C;br> and integrity"]
+        n1["Verifies data accuracy<br> and integrity"]
   end
  style s1 fill:none,stroke:#000000,font-family:Arial,font-size:14px
  style n4 fill:none,stroke:#000000,font-family:Arial,font-size:14px
@@ -53,9 +54,9 @@ title: Architecture Mermaid
     NI -- Mirrored Transaction --> BTC
     CL -- Rotate and determine new signers for new epoch --> s1
     NI -- Kaon Transaction --> s1
-    s1 -- Aggregates and broadcasts&#x3C;br /> Mirrored Transactions to Kaon&#x3C;br /> or Bitcoin --> NI
-    n4 -- Pulls in transaction&#x3C;br /> to be mirrored* --> s2
-    s2 -- Pushes partially&#x3C;br /> signed mirrored&#x3C;br /> transaction --> n4
+    s1 -- Aggregates and broadcasts<br /> Mirrored Transactions to Kaon<br /> or Bitcoin --> NI
+    n4 -- Pulls in transaction<br /> to be mirrored* --> s2
+    s2 -- Pushes partially<br /> signed mirrored<br /> transaction --> n4
     s1 ~~~ t1
     CL ~~~ t2
     CL ~~~ t3
@@ -69,4 +70,4 @@ title: Architecture Mermaid
     t3:::Ash
     t4:::Ash
     classDef Ash stroke-width:1px, stroke-dasharray:none, stroke:#999999, fill:#EEEEEE, color:#000000, font-family:Arial, font-size:14px
-</code></pre>
+```
