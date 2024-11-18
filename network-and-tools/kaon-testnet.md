@@ -28,7 +28,11 @@ Manual configuration of the Kaon Testnet is possible for any Ethereum-compatible
 * **Native currency symbol**: KAON
 * **Block explorer URL**: [https://explorer.testnet.kaon.one](https://explorer.testnet.kaon.one/)
 
+<div align="left">
+
 <figure><img src="../.gitbook/assets/metamask empty.png" alt="" width="244"><figcaption></figcaption></figure>
+
+</div>
 
 Upon successful configuration, you will have established a functional account on the Kaon network. However, users will notice that they currently have 0 KAON tokens.
 
