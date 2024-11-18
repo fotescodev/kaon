@@ -1,7 +1,3 @@
----
-hidden: true
----
-
 # Architecture View
 
 > A Sequence diagram is an interaction diagram that shows how processes operate with one another and in what order.
