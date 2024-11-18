@@ -1,10 +1,10 @@
 # Why Kaon?
 
-The Bitcoin ecosystem is at a pivotal moment. Despite its massive potential, current solutions to make Bitcoin programmable introduce significant risks and limitations, holding back its integration with modern capital markets.
+<figure><img src="../.gitbook/assets/Security SVG.svg" alt=""><figcaption></figcaption></figure>
 
-<figure><img src="../.gitbook/assets/Group 11 (1).png" alt=""><figcaption></figcaption></figure>
-
-## **Current Challenges**
+The Bitcoin ecosystem is at a pivotal moment. Despite its massive potential, current solutions to make Bitcoin programmable introduce significant risks and limitations, holding back its integration with modern capital markets.\
+\
+**Current Challenges**
 
 The blockchain industry faces several critical challenges that have created barriers to safely incorporating Bitcoin's trillion-dollar market cap into DeFi:
 
