@@ -33,947 +33,1067 @@ kaon-cli help <command>
 
 ***
 
-### Command Name: abandontransaction
+## CLI Commands
 
-### Synopsis:
+### `abandontransaction`
 
-`kaon-cli abandontransaction "txid"`
+Mark in-wallet transaction \<txid> as abandoned. This will mark this transaction and all its in-wallet descendants as abandoned which will allow for their inputs to be respent. It can be used to replace "stuck" or evicted transactions. It only works on transactions which are not included in a block and are not currently in the mempool. It has no effect on transactions which are already conflicted or abandoned.
 
-### Description:
+#### Synopsis
 
-Marks an in-wallet transaction specified by its `txid` as abandoned. This action allows the inputs of the abandoned transaction and its descendants to be respent. It's particularly useful for dealing with "stuck" or evicted transactions. The command only affects transactions not yet included in a block and not currently in the mempool. It has no effect on transactions that are already conflicted or abandoned.
-
-### Arguments:
-
-* **Name:** txid
-* **Type:** string
-* **Description:** The ID of the transaction to be abandoned.
-* **Required/Optional:** Required
-
-### Input:
-
-The command accepts the transaction ID as a string argument.
-
-### Output:
-
-The command doesn't return a specific result upon successful execution.
-
-### Examples:
-
-**CLI Usage:**
-
-```bash
-kaon-cli abandontransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"
+```
+abandontransaction <txid>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Marks a specific transaction and its descendants as abandoned within the wallet. This allows the inputs of the abandoned transactions to be reused in new transactions. This command is useful for dealing with transactions that are "stuck" or have been evicted from the mempool. It's important to note that this command only affects transactions that haven't been confirmed in a block and are not currently in the mempool. It won't have any effect on transactions that are already marked as conflicted or abandoned.
+
+#### Arguments
+
+| Name | Type   | Required | Description                           |
+| ---- | ------ | -------- | ------------------------------------- |
+| txid | string | Yes      | The ID of the transaction to abandon. |
+
+#### Flags
+
+None
+
+#### Input
+
+The transaction ID (`txid`) as a string.
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "abandontransaction", "params": ["1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+abandontransaction "1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors might occur if the provided `txid` is invalid, the transaction is already included in a block, or the transaction is currently in the mempool. Specific error messages are not detailed in the provided reference.
+```json
+{
+  "method": "abandontransaction",
+  "params": ["1075db55d416d3ca199f55b6084e2115b9345e16c5cf302fc80e9d5fbf5d48d"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-This command modifies the wallet's internal state. Ensure the provided `txid` is correct before executing the command.
+* If the transaction ID is invalid or doesn't exist in the wallet, an error message will be returned.
+* If the transaction is already confirmed in a block or is currently in the mempool, the command will have no effect and may return an error or a warning.
+
+#### Notes
+
+Use this command with caution. Once a transaction is abandoned, its outputs become spendable again, so ensure you understand the implications before using this command.
 
 ***
 
-### Command Name: addmultisigaddress
+### addmultisigaddress
 
-### Synopsis:
+Add a nrequired-to-sign multisignature address to the wallet. Each key is a Kaon address or hex-encoded public key. If 'account' is specified (DEPRECATED), assign address to that account.
 
-`kaon-cli addmultisigaddress nrequired ["key",...] ("account")`
-
-### Description:
-
-Adds a multisignature address to the wallet, requiring `nrequired` signatures out of the provided keys. Each key can be a Kaon address or a hex-encoded public key. The `account` parameter is deprecated and should not be used.
-
-### Arguments:
-
-* **Name:** nrequired
-* **Type:** numeric
-* **Description:** The number of required signatures.
-* **Required/Optional:** Required
-* **Name:** keysobject
-* **Type:** string (JSON array)
-* **Description:** A JSON array of Kaon addresses or hex-encoded public keys.
-* **Required/Optional:** Required
-* **Name:** account
-* **Type:** string
-* **Description:** Deprecated. Do not use.
-* **Required/Optional:** Optional
-
-### Input:
-
-The command accepts the number of required signatures, a JSON array of keys, and an optional (deprecated) account name.
-
-### Output:
-
-Returns the generated Kaon multisignature address as a string.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli addmultisigaddress 2 "[\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\",\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\"]"
+addmultisigaddress <nrequired> <keysobject> (<account>)
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Adds a multisignature address to the wallet. This address requires `nrequired` signatures from the provided list of keys to authorize spending. Each key can be a Kaon address or a hex-encoded public key. The optional `account` parameter is deprecated and should not be used.
+
+#### Arguments
+
+| Name       | Type    | Required | Description                                                      |
+| ---------- | ------- | -------- | ---------------------------------------------------------------- |
+| nrequired  | numeric | Yes      | The number of required signatures.                               |
+| keysobject | string  | Yes      | A JSON array of Kaon addresses or hex-encoded public keys.       |
+| account    | string  | No       | **DEPRECATED.** An account to assign the address to (don't use). |
+
+#### Flags
+
+None
+
+#### Input
+
+* `nrequired`: An integer representing the number of required signatures.
+* `keysobject`: A JSON string representing an array of Kaon addresses or hex-encoded public keys.
+* `account`: (Optional, deprecated) A string representing the account name.
+
+#### Output
+
+A Kaon address associated with the provided keys.
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addmultisigaddress", "params": [2, "[\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\",\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\"]"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+addmultisigaddress 2 "[\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\",\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\"]"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors might occur if the provided keys are invalid, `nrequired` is out of range, or there's an issue with wallet access. Specific error messages are not detailed in the provided reference.
+```json
+{
+  "method": "addmultisigaddress",
+  "params": [2, "[\"DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6\",\"DAD3Y6ivr8nPQLT1NEPX84DxGCw9jz9Jvg\"]"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-This command modifies the wallet's state by adding a new multisignature address.
+* If `nrequired` is invalid (e.g., less than 1 or greater than the number of keys), an error is returned.
+* If the `keysobject` is not a valid JSON array or contains invalid Kaon addresses or public keys, an error is returned.
+
+#### Notes
+
+Multisignature addresses enhance security by requiring multiple parties to authorize transactions.
 
 ***
 
-### Command Name: addnode
+### addnode
 
-### Synopsis:
+Attempts add or remove a node from the addnode list. Or try a connection to a node once.
 
-`kaon-cli addnode "node" "add|remove|onetry"`
-
-### Description:
-
-Manages the list of nodes known to the client. It allows adding a new node, removing an existing node, or attempting a one-time connection.
-
-### Arguments:
-
-* **Name:** node
-* **Type:** string
-* **Description:** The IP address and port of the node (e.g., "192.168.0.6:9871").
-* **Required/Optional:** Required
-* **Name:** command
-* **Type:** string
-* **Description:** 'add' to add the node permanently, 'remove' to remove it, or 'onetry' for a single connection attempt.
-* **Required/Optional:** Required
-
-### Input:
-
-The command accepts the node's address and the desired action as string arguments.
-
-### Output:
-
-The command doesn't return a specific result upon successful execution. The output of `getpeerinfo` can be used to check the node list.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli addnode "192.168.0.6:9871" "onetry"
+addnode <node> <add|remove|onetry>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Manages the list of nodes that the Kaon client attempts to connect to. You can use this command to add a new node, remove an existing node, or attempt a one-time connection to a specific node.
+
+#### Arguments
+
+| Name    | Type   | Required | Description                                                     |
+| ------- | ------ | -------- | --------------------------------------------------------------- |
+| node    | string | Yes      | The IP address and port of the node (e.g., "192.168.0.6:9871"). |
+| command | string | Yes      | The action to perform: "add", "remove", or "onetry".            |
+
+#### Flags
+
+None
+
+#### Input
+
+* `node`: The IP address and port of the node as a string.
+* `command`: The command to execute ("add", "remove", or "onetry") as a string.
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "addnode", "params": ["192.168.0.6:9871", "onetry"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+addnode "192.168.0.6:9871" "onetry"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors may occur if the provided node address is invalid or if the command is unable to connect to the node. Specific error messages are not detailed in the provided reference.
+```json
+{
+  "method": "addnode",
+  "params": ["192.168.0.6:9871", "onetry"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-Nodes added with `onetry` are not persistent and won’t appear in the list of added nodes retrieved via `getaddednodeinfo`. `getpeerinfo` can be used to see currently connected peers.
+* If the `node` format is invalid, an error will be returned.
+* If the `command` is not one of "add", "remove", or "onetry", an error will be returned.
+* If attempting to add a node that is already in the addnode list, or remove a node that is not in the list, an error or warning may be returned.
+
+#### Notes
+
+The `addnode` command affects the client's connection attempts but doesn't guarantee a successful connection. See `getpeerinfo` for a list of currently connected peers. Related commands: `getpeerinfo`, `disconnectnode`.
 
 ***
 
-### Command Name: autocombinerewards
+### autocombinerewards
 
-### Synopsis:
+Wallet will automatically monitor for any coins with value below the threshold amount, and combine them if they reside with the same Kaon address. When autocombinerewards runs it will create a transaction, and therefore will be subject to transaction fees.
 
-`kaon-cli autocombinerewards enable (threshold)`
-
-### Description:
-
-Enables or disables the automatic combining of rewards below a specified threshold. This helps manage UTXOs (Unspent Transaction Outputs) by consolidating smaller reward amounts into larger ones. Because this involves creating a transaction on the blockchain, network transaction fees will apply.
-
-### Arguments:
-
-* **Name:** enable
-* **Type:** boolean
-* **Description:** `true` to enable automatic reward combining, `false` to disable.
-* **Required/Optional:** Required
-* **Name:** threshold
-* **Type:** numeric
-* **Description:** The threshold amount below which rewards will be combined.
-* **Required/Optional:** Optional (default: 0)
-
-### Input:
-
-The command accepts a boolean value to enable/disable the feature and an optional numeric threshold.
-
-### Output:
-
-The command doesn't provide a specific output upon successful execution.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli autocombinerewards true 500
+autocombinerewards <enable> (<threshold>)
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Enables or disables the automatic combining of small coin outputs within the wallet. If enabled, the wallet will regularly check for outputs below the specified `threshold` and combine them into a single larger output. This helps to reduce the number of UTXOs in the wallet and can improve transaction efficiency. Note that combining outputs involves creating a new transaction, which incurs transaction fees.
+
+#### Arguments
+
+| Name      | Type    | Required | Description                                                  |
+| --------- | ------- | -------- | ------------------------------------------------------------ |
+| enable    | boolean | Yes      | Enable (true) or disable (false) automatic combining.        |
+| threshold | numeric | No       | The minimum output value below which coins will be combined. |
+
+#### Flags
+
+None
+
+#### Input
+
+* `enable`: A boolean value (`true` or `false`).
+* `threshold`: (Optional) A numeric value representing the threshold. Defaults to 0.
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "autocombinerewards", "params": [true, 500] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+autocombinerewards true 500
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors might occur if the provided threshold is invalid or the wallet cannot create the necessary transactions. Specific error messages are not provided in the reference.
+```json
+{
+  "method": "autocombinerewards",
+  "params": [true, 500]
+}
+```
 
-### Notes:
+#### Error Handling
 
-The default threshold of 0 means that all eligible rewards will be combined. Setting a higher threshold will only combine rewards below that value. Be mindful of transaction fees when setting the threshold.
+* If `enable` is not a valid boolean, an error will be returned.
+* If `threshold` is not a valid number, an error will be returned.
+
+#### Notes
+
+Transaction fees are deducted from the combined output. Combining outputs can help improve wallet performance, especially if you have many small UTXOs.
 
 ***
 
-### Command Name: backupwallet
+### backupwallet
 
-### Synopsis:
+Safely copies wallet.dat to destination, which can be a directory or a path with filename.
 
-`kaon-cli backupwallet "destination"`
-
-### Description:
-
-Creates a backup copy of the wallet data file (`wallet.dat`) to the specified destination. This destination can be a file path or a directory.
-
-### Arguments:
-
-* **Name:** destination
-* **Type:** string
-* **Description:** The path to the backup file or directory.
-* **Required/Optional:** Required
-
-### Input:
-
-The command takes the backup destination as a string argument.
-
-### Output:
-
-The command doesn't produce a specific output on success.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli backupwallet "backup.dat"
+backupwallet <destination>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Creates a backup of the wallet data file (`wallet.dat`). This backup can be used to restore the wallet in case of data loss or corruption. The `destination` can be either a directory or a full file path.
+
+#### Arguments
+
+| Name        | Type   | Required | Description                                       |
+| ----------- | ------ | -------- | ------------------------------------------------- |
+| destination | string | Yes      | The directory or file path for the wallet backup. |
+
+#### Flags
+
+None
+
+#### Input
+
+* `destination`: A string representing the backup destination.
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "backupwallet", "params": ["backup.dat"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+backupwallet "backup.dat"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors may arise if the destination is inaccessible or if there's an issue reading the wallet data. The reference does not provide detailed error messages.
+```json
+{
+  "method": "backupwallet",
+  "params": ["backup.dat"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-Ensure the backup destination is secure and accessible when needed to restore the wallet. It's highly recommended to regularly back up your wallet.
+* If the destination directory doesn't exist or is not writable, an error will be returned.
+* If the wallet file cannot be read, an error will be returned.
+
+#### Notes
+
+Regularly backing up your wallet is essential for protecting your funds. Store backups securely and in multiple locations. Related commands: `dumpwallet`, `importwallet`
 
 ***
 
-### Command Name: bip38decrypt
+### bip38decrypt
 
-### Synopsis:
+Decrypts and then imports password protected private key.
 
-`kaon-cli bip38decrypt "kaonaddress" "passphrase"`
-
-### Description:
-
-Decrypts a BIP38-encrypted private key and imports it into the wallet. BIP38 is a standard for encrypting private keys with a passphrase, adding a layer of security.
-
-### Arguments:
-
-* **Name:** encryptedkey
-* **Type:** string
-* **Description:** The BIP38-encrypted private key.
-* **Required/Optional:** Required
-* **Name:** passphrase
-* **Type:** string
-* **Description:** The passphrase used to encrypt the private key.
-* **Required/Optional:** Required
-
-### Input:
-
-The command requires the encrypted private key and the associated passphrase.
-
-### Output:
-
-Returns the decrypted private key as a string.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli bip38decrypt "encryptedkey" "mypassphrase"
+bip38decrypt <kaonaddress> <passphrase>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Decrypts a BIP38-encrypted private key and imports it into the wallet. BIP38 encryption provides a secure way to store private keys by encrypting them with a passphrase.
+
+#### Arguments
+
+| Name        | Type   | Required | Description                        |
+| ----------- | ------ | -------- | ---------------------------------- |
+| kaonaddress | string | Yes      | The encrypted private key.         |
+| passphrase  | string | Yes      | The passphrase to decrypt the key. |
+
+#### Flags
+
+None
+
+#### Input
+
+* `kaonaddress`: The encrypted BIP38 private key as a string.
+* `passphrase`: The passphrase used to encrypt the private key as a string.
+
+#### Output
+
+The decrypted private key.
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "bip38decrypt", "params": ["encryptedkey", "mypassphrase"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+bip38decrypt "6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg" "mypassphrase"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors can occur if the provided key is not a valid BIP38-encrypted key, the passphrase is incorrect, or if there are issues importing the decrypted key into the wallet. Specific error messages are not detailed.
+```json
+{
+  "method": "bip38decrypt",
+  "params": ["6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg", "mypassphrase"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-The decrypted private key is sensitive information. Handle it with care and avoid storing it insecurely.
+* If the encrypted key is invalid or not a valid BIP38-encrypted key, an error message will be returned.
+* If the passphrase is incorrect, decryption will fail, and an error will be returned.
+
+#### Notes
+
+After decrypting and importing the key, you can use it like any other private key in your wallet. Be sure to keep the decrypted private key secure. Related commands: `bip38encrypt`, `importprivkey`, `dumpprivkey`
 
 ***
 
-### Command Name: bip38encrypt
+### bip38encrypt
 
-### Synopsis:
+Encrypts a private key corresponding to 'kaonaddress'.
 
-`kaon-cli bip38encrypt "kaonaddress" "passphrase"`
-
-### Description:
-
-Encrypts a private key corresponding to the provided Kaon address using BIP38 encryption. The wallet must already contain the private key for the specified address. Valid passphrase special characters: !#$%&'()\*+,-./:;<=>?\`{|}\~
-
-### Arguments:
-
-* **Name:** kaonaddress
-* **Type:** string
-* **Description:** The Kaon address for which the corresponding private key will be encrypted.
-* **Required/Optional:** Required
-* **Name:** passphrase
-* **Type:** string
-* **Description:** The passphrase used to encrypt the private key.
-* **Required/Optional:** Required
-
-### Input:
-
-The command accepts the Kaon address and the encryption passphrase as string arguments.
-
-### Output:
-
-Returns the BIP38-encrypted private key as a string.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli bip38encrypt "DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6" "mypasphrase"
+bip38encrypt <kaonaddress> <passphrase>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Encrypts a private key corresponding to a specific Kaon address using BIP38 encryption. This allows you to securely store your private keys by protecting them with a passphrase. This command only works if you already hold the private key for the specified address in your wallet.
+
+#### Arguments
+
+| Name        | Type   | Required | Description                               |
+| ----------- | ------ | -------- | ----------------------------------------- |
+| kaonaddress | string | Yes      | The Kaon address associated with the key. |
+| passphrase  | string | Yes      | The passphrase to encrypt the key with.   |
+
+#### Flags
+
+None
+
+#### Input
+
+* `kaonaddress`: The Kaon address for the private key to encrypt.
+* `passphrase`: The passphrase to use for encryption. Valid special chars: !#$%&'()\*+,-./:;<=>?\`{|}\~
+
+#### Output
+
+The BIP38 encrypted private key.
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "bip38encrypt", "params": ["DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6", "mypasphrase"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+bip38encrypt "DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6" "mypassphrase"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors can occur if the address is invalid, the wallet doesn't contain the private key for the address, or if the encryption process fails. Detailed error messages are not provided.
+```json
+{
+  "method": "bip38encrypt",
+  "params": ["DMJRSsuU9zfyrvxVaAEFQqK4MxZg6vgeS6", "mypassphrase"]
+}
 
-### Notes:
+```
 
-Store the encrypted key and passphrase securely. Losing either will result in the loss of access to the associated funds. BIP38 encryption significantly enhances the security of private keys.
+#### Error Handling
+
+* If the address is invalid or doesn't exist in the wallet, an error is returned.
+* If the wallet doesn't hold the private key for the specified address, an error is returned.
+
+#### Notes
+
+Store the encrypted private key securely. You will need the passphrase to decrypt and use the key later. Related commands: `bip38decrypt`, `importprivkey`, `dumpprivkey`
 
 ***
 
-### Command Name: callcontract
+### callcontract
 
-### Synopsis:
+Call contract methods offline.
 
-`kaon-cli callcontract <address> <data> (<senderAddress> <gasLimit> <amount>)`
-
-### Description:
-
-Calls a contract method offline, allowing you to test contract interactions without broadcasting a transaction to the network. Provides execution details and a simulated transaction receipt. Note that the "amount" parameter is unused according to the provided documentation.
-
-### Arguments:
-
-* **Name:** address
-* **Type:** string (hex)
-* **Description:** The contract address.
-* **Required/Optional:** Required
-* **Name:** data
-* **Type:** string (hex)
-* **Description:** The data to be sent to the contract method as a hex string.
-* **Required/Optional:** Required
-* **Name:** senderAddress
-* **Type:** string
-* **Description:** The sender address.
-* **Required/Optional:** Optional, named
-* **Name:** gasLimit
-* **Type:** numeric
-* **Description:** The gas limit for executing the contract.
-* **Required/Optional:** Optional, named
-* **Name:** amount
-* **Type:** numeric
-* **Description:** Unused. Do not use.
-* **Required/Optional:** Optional, named
-
-### Input:
-
-Accepts the contract address, the data (hex string), the sender address, the gas limit, and an unused amount parameter.
-
-### Output:
-
-Returns a JSON object containing:
-
-* `address`: The contract address.
-* `executionResult`: An object detailing the execution results including gas used, exceptions, new contract address (if created), output data, and deposit-related information.
-* `transactionReceipt`: A simulated transaction receipt including state root hash, gas used, bloom filter, and logs generated by the contract call.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli callcontract eb23c0b3e6042821da281a2e2364feb22dd543e3 06fdde03
+callcontract <address> <data> (<senderAddress> <gasLimit> <amount>)
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Calls a contract method offline, allowing you to test and debug contract interactions without broadcasting a transaction to the network. This command provides detailed information about the execution result and transaction receipt, including gas usage, returned data, and any exceptions thrown.
+
+#### Arguments
+
+| Name          | Type    | Required | Description                                           |
+| ------------- | ------- | -------- | ----------------------------------------------------- |
+| address       | string  | Yes      | The contract address (hexadecimal).                   |
+| data          | string  | Yes      | The data hex string to pass to the contract method.   |
+| senderAddress | string  | No       | The sender address string.                            |
+| gasLimit      | numeric | No       | The gas limit for executing the contract.             |
+| amount        | numeric | No       | UNUSED The amount in KAON to send. eg 0.1, default: 0 |
+
+#### Flags
+
+None
+
+#### Input
+
+* `address`: The contract address as a hexadecimal string.
+* `data`: The data to send to the contract method as a hexadecimal string.
+* `senderAddress`: (Optional) The sender's Kaon address.
+* `gasLimit`: (Optional) The gas limit for the contract execution.
+* `amount`: (Optional, UNUSED) The amount of KAON to send (default: 0).
+
+#### Output
+
+A JSON object containing the execution result and transaction receipt.
+
+```json
+{
+  "address": "contract address",
+  "executionResult": {
+    "gasUsed": n,
+    "excepted": "exception",
+    "newAddress": "contract address",
+    "output": "data",
+    "codeDeposit": n,
+    "gasRefunded": n,
+    "depositSize": n,
+    "gasForDeposit": n
+  },
+  "transactionReceipt": {
+    "stateRoot": "hash",
+    "gasUsed": n,
+    "bloom": "bloom",
+    "log": [
+      {
+        "address": "address",
+        "topics": [
+          "topic"
+        ],
+        "data": "data"
+      }
+    ]
+  }
+}
+```
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "callcontract", "params": ["eb23c0b3e6042821da281a2e2364feb22dd543e3", "06fdde03"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+callcontract eb23c0b3e6042821da281a2e2364feb22dd543e3 06fdde03
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors may occur if the contract address is invalid, the data is malformed, the gas limit is insufficient, or if there are other issues during the contract call. The provided reference lacks specific error message details.
+```json
+{
+  "method": "callcontract",
+  "params": ["eb23c0b3e6042821da281a2e2364feb22dd543e3", "06fdde03"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-The command executes the contract call offline, so the results are not reflected on the blockchain. The "amount" parameter, while present, is explicitly marked as unused in the provided documentation.
+* If the contract address is invalid, an error is returned.
+* If the data hex string is invalid, an error is returned.
+* If the gas limit is insufficient, an error is returned.
+* If the contract execution throws an exception, the `excepted` field in the output will contain the exception message.
+
+#### Notes
+
+This command is helpful for testing contract functionality before deploying it or sending transactions on the mainnet. It simulates a transaction without actually broadcasting it.
 
 ***
 
-### Command Name: checkbudgets
+### checkbudgets
 
-### Synopsis:
+Initiates a budget check cycle manually.
 
-`kaon-cli checkbudgets`
-
-### Description:
-
-Manually initiates a budget check cycle. This allows for on-demand verification and processing of budget proposals and payments.
-
-### Input:
-
-The command does not take any arguments.
-
-### Output:
-
-The command doesn't have a specified output upon successful completion.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli checkbudgets
+checkbudgets
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Manually triggers a budget check cycle. This cycle evaluates budget proposals and determines which proposals will be funded in the next payment cycle.
+
+#### Arguments
+
+None
+
+#### Flags
+
+None
+
+#### Input
+
+None
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "checkbudgets", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+checkbudgets
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors might be related to the budget processing cycle. The provided reference does not offer specifics on error messages.
+```json
+{
+  "method": "checkbudgets",
+  "params": []
+}
+```
 
-### Notes:
+#### Error Handling
 
-This command can be useful for debugging budget-related issues or for forcing budget updates.
+Any errors encountered during the budget check cycle will be logged.
+
+#### Notes
+
+Manually checking budgets can be useful for testing or debugging the budget system. Related commands: `getbudgetinfo`, `getbudgetprojection`, `getbudgetvotes`, `preparebudget`, `submitbudget`
 
 ***
 
-### Command Name: clearbanned
+### clearbanned
 
-### Synopsis:
+Clear all banned IPs.
 
-`kaon-cli clearbanned`
-
-### Description:
-
-Clears all banned IP addresses from the node's ban list. This allows previously banned clients to reconnect.
-
-### Input:
-
-This command does not require any arguments.
-
-### Output:
-
-The command does not produce a specific output on successful completion.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli clearbanned
+clearbanned
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Removes all IP addresses and subnets from the ban list. Banned IPs are prevented from connecting to your Kaon node.
+
+#### Arguments
+
+None
+
+#### Flags
+
+None
+
+#### Input
+
+None
+
+#### Output
+
+None
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "clearbanned", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+clearbanned
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Potential errors might involve permission issues or problems accessing the ban list. Error details are not provided.
+```json
+{
+  "method": "clearbanned",
+  "params": []
+}
+```
 
-### Notes:
+#### Error Handling
 
-Use with caution as it removes all bans, potentially allowing malicious actors to reconnect. `listbanned` can be used to view the current ban list before clearing it.
+Any errors encountered while clearing the ban list will be logged.
+
+#### Notes
+
+Use with caution, as clearing the ban list might allow previously banned nodes to reconnect. Related commands: `setban`, `listbanned`
 
 ***
 
-### Command Name: createcontract
+### createcontract
 
-### Synopsis:
+Create a contract with bytecode.
 
-`kaon-cli createcontract <bytecode> (<gasLimit> <gasPrice> <senderaddress> <broadcast> <changeToSender>)`
-
-### Description:
-
-Creates a new smart contract on the Kaon blockchain using the provided bytecode. Offers options for specifying gas limit, gas price, sender address, broadcast behavior, and change handling.
-
-### Arguments:
-
-* **Name:** bytecode
-* **Type:** string (hex)
-* **Description:** The compiled bytecode of the contract.
-* **Required/Optional:** Required
-* **Name:** gasLimit
-* **Type:** numeric (Amount)
-* **Description:** The maximum amount of gas to use for contract deployment (default: `DEFAULT_GAS_LIMIT_OP_CREATE`).
-* **Required/Optional:** Optional
-* **Name:** gasPrice
-* **Type:** numeric (Amount)
-* **Description:** The gas price in KAON per gas unit.
-* **Required/Optional:** Optional
-* **Name:** senderaddress
-* **Type:** string (hex)
-* **Description:** The Kaon address that will deploy the contract.
-* **Required/Optional:** Optional
-* **Name:** broadcast
-* **Type:** boolean
-* **Description:** Whether to broadcast the contract creation transaction (default: true).
-* **Required/Optional:** Optional
-* **Name:** changeToSender
-* **Type:** boolean
-* **Description:** Whether to return any remaining KAON (change) to the sender address (default: true).
-* **Required/Optional:** Optional
-
-### Input:
-
-The command requires the contract bytecode and optionally accepts gas limit, gas price, sender address, broadcast flag, and change-to-sender flag.
-
-### Output:
-
-Returns a JSON array containing an object with the following:
-
-* `txid`: The transaction ID of the contract creation transaction.
-* `sender`: The sender's KAON address.
-* `hash160`: The RIPEMD-160 hash of the sender's address.
-* `address`: The expected address of the deployed contract.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli createcontract "60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256"
-kaon-cli createcontract "60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256" 6000000 40 "QM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" true true
+createcontract <bytecode> (<gasLimit> <gasPrice> <senderaddress> <broadcast> <changeToSender>)
 ```
 
-### Error Handling:
+#### Description
 
-Errors may occur if the bytecode is invalid, gas limits are exceeded, the sender has insufficient funds, or if broadcasting the transaction fails. Error messages are not detailed.
+Creates a new smart contract on the Kaon blockchain using the provided bytecode. This command allows you to deploy your own smart contracts and interact with them. You can specify gas limit, gas price, sender address, whether to broadcast the transaction, and whether to return the change to the sender.
 
-### Notes:
+#### Arguments
 
-Contract creation consumes gas. The `gasLimit` and `gasPrice` arguments help manage the cost of deployment. If `broadcast` is false, the transaction is not sent to the network, allowing for offline testing. The `changeToSender` flag affects how any remaining KAON from the transaction is handled.
+| Name           | Type    | Required | Description                                                                     |
+| -------------- | ------- | -------- | ------------------------------------------------------------------------------- |
+| bytecode       | string  | Yes      | The contract bytecode (hexadecimal string).                                     |
+| gasLimit       | numeric | No       | The gas limit for contract creation (default: DEFAULT\_GAS\_LIMIT\_OP\_CREATE). |
+| gasPrice       | numeric | No       | The gas price in KAON per gas unit.                                             |
+| senderaddress  | string  | No       | The Kaon address used to create the contract.                                   |
+| broadcast      | boolean | No       | Whether to broadcast the transaction (default: true).                           |
+| changeToSender | boolean | No       | Return change to the sender (default: true).                                    |
+
+#### Flags
+
+None
+
+#### Input
+
+* `bytecode`: Contract bytecode as a hexadecimal string.
+* `gasLimit`: (Optional) Gas limit as a number. Defaults to DEFAULT\_GAS\_LIMIT\_OP\_CREATE.
+* `gasPrice`: (Optional) Gas price in KAON per gas unit.
+* `senderaddress`: (Optional) Sender's Kaon address.
+* `broadcast`: (Optional) Boolean indicating whether to broadcast the transaction. Defaults to true.
+* `changeToSender`: (Optional) Boolean indicating whether to return change to the sender. Defaults to true.
+
+#### Output
+
+A JSON array containing the transaction details:
+
+```json
+[
+  {
+    "txid" : "string",         // The transaction id.
+    "sender" : "string",      // CURRENCY_UNIT address of the sender.
+    "hash160" : "string",    // ripemd-160 hash of the sender.
+    "address" : "string"     // Expected contract address.
+  }
+]
+```
+
+#### Examples
+
+CLI Usage:
+
+```bash
+createcontract "60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256"
+```
+
+```bash
+createcontract "60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256" 6000000 40 "QM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd" true
+```
+
+JSON-RPC Call:
+
+```json
+{
+  "method": "createcontract",
+  "params": [
+      "60606040525b33600060006101000a81548173ffffffffffffffffffffffffffffffffffffffff02191690836c010000000000000000000000009081020402179055506103786001600050819055505b600c80605b6000396000f360606040526008565b600256",
+      6000000,
+      40,
+      "QM72Sfpbz1BPpXFHz9m3CdqATR44Jvaydd",
+      true
+ ]
+}
+
+```
+
+#### Error Handling
+
+* If the bytecode is invalid, an error is returned.
+* If the gas limit is insufficient, an error is returned.
+* If the sender address is invalid or doesn't have enough balance, an error is returned.
+* If broadcasting the transaction fails, an error is returned.
+
+#### Notes
+
+Contract creation consumes KAON for gas. Ensure that the sender address has sufficient balance and the gas limit and price are appropriately set. Relatd commands: `sendtocontract`, `callcontract`, `listcontracts`, `getaccountinfo`, `getstorage`
 
 ***
 
-### Command Name: createmasternodebroadcast
+### createmasternodebroadcast
 
-### Synopsis:
+Creates a masternode broadcast message for one or all masternodes configured in masternode.conf.
 
-`kaon-cli createmasternodebroadcast "command" ("alias")`
-
-### Description:
-
-Creates and returns a masternode broadcast message. This message is necessary for announcing a masternode to the network and enabling its participation in the consensus process. It can be created for a specific masternode identified by its alias, or for all configured masternodes.
-
-### Arguments:
-
-* **Name:** command
-* **Type:** string
-* **Description:** "alias" for a single masternode, or "all" for all masternodes defined in `masternode.conf`.
-* **Required/Optional:** Required
-* **Name:** alias
-* **Type:** string
-* **Description:** The alias of the masternode (required when `command` is "alias"). The alias should correspond to an entry in the `masternode.conf` file.
-* **Required/Optional:** Required if command is "alias"
-
-### Input:
-
-The command takes the desired command ("alias" or "all") and, if applicable, the masternode alias.
-
-### Output:
-
-* **If command is "all":** Returns a JSON object with an "overall" status message and a "detail" array containing individual broadcast results for each masternode. Each element in the "detail" array includes the alias, success status, hex-encoded broadcast message (if successful), and any error messages.
-* **If command is "alias":** Returns a JSON object with the alias, success status, hex-encoded broadcast message (if successful), and any error messages.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli createmasternodebroadcast alias mymn1
+createmasternodebroadcast <command> (<alias>)
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Generates a masternode broadcast message, which is necessary for announcing a masternode to the network. You can create a broadcast for a single masternode using its alias or for all masternodes defined in your `masternode.conf` file.
+
+#### Arguments
+
+| Name    | Type   | Required                    | Description                                                               |
+| ------- | ------ | --------------------------- | ------------------------------------------------------------------------- |
+| command | string | Yes                         | The command to execute: "alias" for a single masternode or "all" for all. |
+| alias   | string | Yes (if command is "alias") | The alias of the masternode (defined in masternode.conf).                 |
+
+#### Flags
+
+None
+
+#### Input
+
+* `command`: A string, either "alias" or "all".
+* `alias`: (Optional, required if command is "alias") A string representing the masternode alias.
+
+#### Output
+
+* **If `command` is "all":** A JSON object with an overall status message and an array of broadcast objects, each containing details about the broadcast for a specific masternode.
+
+```json
+{
+  "overall": "xxx",
+  "detail": [
+    {
+      "alias": "xxx",
+      "success": true|false,
+      "hex": "xxx",          // If success is true.
+      "error_message": "xxx"   // If success is false.
+    }
+    // ...
+  ]
+}
+```
+
+* **If `command` is "alias":** A JSON object containing the broadcast details for the specified masternode.
+
+```json
+{
+  "alias": "xxx",
+  "success": true|false,
+  "hex": "xxx",          // If success is true.
+  "error_message": "xxx"   // If success is false.
+}
+
+```
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createmasternodebroadcast", "params": ["alias", "mymn1"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+createmasternodebroadcast alias mymn1
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors can occur if the specified alias is invalid, the masternode configuration is incorrect, or if there are network issues. Detailed error descriptions are returned within the result JSON.
+```json
+{
+  "method": "createmasternodebroadcast",
+  "params": ["alias", "mymn1"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-The generated broadcast message needs to be relayed to the network using the `relaymasternodebroadcast` command (or equivalent methods) for the masternode to be recognized. The `masternode.conf` file contains the necessary configuration details for each masternode.
+* If the command is not "alias" or "all", an error is returned.
+* If "alias" is specified but the alias doesn't exist in the configuration, an error is returned.
+* If any error occurs during the broadcast creation for a specific masternode, the "success" field for that masternode will be false, and an "error\_message" will be provided.
+
+#### Notes
+
+This command doesn't start the masternode; it only creates the broadcast message. You'll need to use other commands like `startmasternode` to actually start the masternode. Related commands: `startmasternode`, `decodemasternodebroadcast`, `relaymasternodebroadcast`, `listmasternodes`
 
 ***
 
-### Command Name: createmasternodekey
+### createmasternodekey
 
-### Synopsis:
+Create a new masternode private key.
 
-`kaon-cli createmasternodekey`
-
-### Description:
-
-Generates a new private key specifically for use with a masternode. This key is essential for masternode operation and should be kept securely.
-
-### Input:
-
-This command doesn't require any arguments.
-
-### Output:
-
-Returns the newly generated masternode private key as a string.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli createmasternodekey
+createmasternodekey
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Generates a new private key specifically for use with a masternode. This key is crucial for running a masternode and should be kept securely.
+
+#### Arguments
+
+None
+
+#### Flags
+
+None
+
+#### Input
+
+None
+
+#### Output
+
+The newly generated masternode private key.
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createmasternodekey", "params": [] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+createmasternodekey
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors might be related to key generation or wallet access. Specific errors are not described in the given reference.
+```json
+{
+  "method": "createmasternodekey",
+  "params": []
+}
+```
 
-### Notes:
+#### Error Handling
 
-Securely store the generated private key. Loss of this key can lead to loss of control over the associated masternode and its collateral.
+If the key generation process encounters any errors, an error message will be returned.
+
+#### Notes
+
+Store this private key securely, as losing it can result in the loss of your masternode collateral. This key is different from your regular wallet private keys and shouldn't be used for other purposes. Related commands: `startmasternode`, `listmasternodes`
 
 ***
 
-### Command Name: createmasternodev2
+### createmasternodev2
 
-### Synopsis:
+Attempts to start one or more masternode(s). 1) send a tx with 10k to that address. 2) get the rate output. 3) use those values on the masternode.conf.
 
-`kaon-cli createmasternodev2 "alias" "127.0.0.1:9871"`
+#### Synopsis
 
-### Description:
+```bash
+createmasternodev2 <alias> <127.0.0.1:9871> <privkey>
+```
 
-Attempts to set up and start a masternode using provided arguments. It initiates the process by sending a transaction with the required collateral (10,000 KAON) to the specified address, then retrieves the transaction output and prompts for inclusion in `masternode.conf`.
+#### Description
 
-### Arguments:
+This command attempts to start a masternode by sending a transaction with the specified amount (10,000 KAON) to the specified address. It then retrieves the transaction output and uses those values to configure the masternode in the `masternode.conf` file.
 
-* **Name:** privkey
-* **Type:** string
-* **Description:** The masternode's private key.
-* **Required/Optional:** Required
-* **Name:** alias
-* **Type:** string
-* **Description:** The label or alias for the masternode. It will be used as an identifier in the `masternode.conf` file.
-* **Required/Optional:** Required
-* **Name:** address
-* **Type:** string
-* **Description:** The IP address and port of the masternode.
-* **Required/Optional:** Required
+#### Arguments
 
-### Input:
+| Name    | Type   | Required | Description                            |
+| ------- | ------ | -------- | -------------------------------------- |
+| privkey | string | Yes      | The masternode's private key.          |
+| alias   | string | Yes      | The alias for the masternode.          |
+| address | string | Yes      | IP address and port of the masternode. |
 
-The command takes the masternode's private key, alias, and IP:Port as string arguments.
+#### Flags
 
-### Output:
+None
 
-Returns a JSON object containing:
+#### Input
 
-* `success`: A boolean indicating whether the masternode setup process succeeded.
-* `result`: A message describing the status of the masternode creation.
+* `privkey`: The private key of the masternode.
+* `alias`: The alias or label for the masternode.
+* `address`: The IP address and port of the masternode.
 
-### Examples:
+#### Output
 
-The documentation does not provide any examples. Please ask the developers for this information.
+A JSON object indicating the status of the operation.
 
-### Error Handling:
+```json
+{
+  "success": true|false, // Status of the operation
+  "result": "string"    // Masternode creation status message
+}
+```
 
-Errors can occur if the provided information is invalid, there are insufficient funds for the collateral transaction, or there are issues communicating with the network. Specific error messages are not provided in the original reference.
+#### Examples
 
-### Notes:
+CLI Usage:
 
-This command automates part of the masternode setup. After running this, the output data must be manually added to `masternode.conf` for the masternode to function.
+```bash
+createmasternodev2 "mymn1" "127.0.0.1:9871" "93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg"
+```
+
+JSON-RPC Call (example - structure depends on the actual output):
+
+```json
+{
+  "method": "createmasternodev2",
+  "params": ["mymn1", "127.0.0.1:9871", "93HaYBVUCYjEMeeH1Y4sBGLALQZE1Yc1K64xiqgX37tGBDQL8Xg"]
+}
+```
+
+#### Error Handling
+
+* If any of the arguments are invalid or missing, an error message will be returned.
+* If the transaction fails to send or the output cannot be retrieved, an error message will be returned.
+* If the `masternode.conf` file cannot be updated, an error message will be returned.
+
+#### Notes
+
+This command automates the process of setting up a masternode, but it's important to understand the underlying steps involved. Ensure you have the correct collateral amount (10,000 KAON) and that the specified address is controlled by your wallet. Related commands: `startmasternode`, `listmasternodes`
 
 ***
 
-### Command Name: createmultisig
+### createmultisig
 
-### Synopsis:
+Creates a multi-signature address with n signature of m keys required. It returns a json object with the address and redeemScript.
 
-`kaon-cli createmultisig nrequired ["key",...]`
-
-### Description:
-
-Creates a multi-signature address requiring `nrequired` signatures out of the provided list of keys. This address can be used to receive funds that can only be spent with the required number of signatures.
-
-### Arguments:
-
-* **Name:** nrequired
-* **Type:** numeric
-* **Description:** The minimum number of signatures required to spend funds sent to this address.
-* **Required/Optional:** Required
-* **Name:** keys
-* **Type:** string (JSON array)
-* **Description:** A JSON array of Kaon addresses or hex-encoded public keys. These keys represent the participants authorized to sign transactions.
-* **Required/Optional:** Required
-
-### Input:
-
-The command takes the number of required signatures and a JSON array of keys as arguments.
-
-### Output:
-
-Returns a JSON object containing:
-
-* `address`: The newly generated multi-signature address.
-* `redeemScript`: The hex-encoded redemption script that defines the spending conditions for this multi-signature address.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli createmultisig 2 "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"
+createmultisig <nrequired> <keys>
 ```
 
-**JSON-RPC Call:**
+#### Description
+
+Creates a multisignature address that requires a specific number of signatures (`nrequired`) to authorize spending. The address is generated from a list of provided public keys or Kaon addresses (`keys`). The command returns the newly created multisignature address and its corresponding redeem script.
+
+#### Arguments
+
+| Name      | Type    | Required | Description                                                |
+| --------- | ------- | -------- | ---------------------------------------------------------- |
+| nrequired | numeric | Yes      | The number of required signatures.                         |
+| keys      | string  | Yes      | A JSON array of Kaon addresses or hex-encoded public keys. |
+
+#### Flags
+
+None
+
+#### Input
+
+* `nrequired`: An integer representing the minimum number of signatures required.
+* `keys`: A JSON string representing an array of Kaon addresses or hex-encoded public keys.
+
+#### Output
+
+A JSON object containing the multisignature address and redeem script.
+
+```json
+{
+  "address": "multisigaddress", // The new multisig address
+  "redeemScript": "script"       // The hex-encoded redemption script
+}
+
+```
+
+#### Examples
+
+CLI Usage:
 
 ```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createmultisig", "params": [2, "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
+createmultisig 2 "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"
 ```
 
-### Error Handling:
+JSON-RPC Call:
 
-Errors may occur if the provided keys are invalid, the required number of signatures is out of range, or there's an issue generating the multi-signature address. Specific errors and their corresponding messages are not detailed in the provided reference.
+```json
+{
+  "method": "createmultisig",
+  "params": [2, "[\"16sSauSf5pF2UkUwvKGq4qjNRzBZYqgEL5\",\"171sgjn4YtPu27adkKGrdDwzRTxnRkBfKV\"]"]
+}
+```
 
-### Notes:
+#### Error Handling
 
-The `redeemScript` is crucial for spending funds sent to this address. Keep it secure as it contains the logic that defines the multi-signature conditions.
+* If the `nrequired` parameter is invalid (e.g., less than 1 or greater than the number of keys), an error is returned.
+* If any of the keys in the `keys` array are invalid, an error is returned.
+
+#### Notes
+
+Multisignature addresses enhance security by requiring multiple parties to authorize transactions. The redeem script is essential for spending funds from this address. Related commands: `addmultisigaddress`
 
 ***
 
-### Command Name: createrawtransaction
+### createwallet
 
-### Synopsis:
+Creates and loads a new wallet. Note that this will shutdown the server.
 
-`kaon-cli createrawtransaction [{"txid":"id","vout":n},...] {"address":amount,...} (locktime)`
-
-### Description:
-
-Creates a raw, unsigned transaction. This command constructs the basic structure of a transaction based on specified inputs (UTXOs) and outputs (addresses and amounts), without signing it or broadcasting it to the network.
-
-### Arguments:
-
-* **Name:** transactions
-* **Type:** string (JSON array)
-* **Description:** A JSON array of objects, each representing a transaction input (UTXO). Each UTXO object must contain the `txid` and `vout` fields and optionally a `sequence` field.
-* **Required/Optional:** Required
-* **Name:** addresses
-* **Type:** string (JSON object)
-* **Description:** A JSON object specifying the transaction outputs. Keys are Kaon addresses, and values are the corresponding amounts.
-* **Required/Optional:** Required
-* **Name:** locktime
-* **Type:** numeric
-* **Description:** Sets the `locktime` field of the transaction. A non-zero value prevents the transaction from being included in a block until the specified block height or time (depending on transaction version). Default is 0.
-* **Required/Optional:** Optional (default: 0)
-
-### Input:
-
-The command takes two JSON strings as arguments: one for inputs (UTXOs) and another for outputs (addresses/amounts). It also optionally accepts a numeric `locktime`.
-
-### Output:
-
-Returns the hex-encoded raw transaction as a string.
-
-### Examples:
-
-**CLI Usage:**
+#### Synopsis
 
 ```bash
-kaon-cli createrawtransaction "[{\"txid\":\"myid\",\"vout\":0}]" "{\"address\":0.01}"
+createwallet (<wallet_name> <disable_private_keys> <blank> <passphrase> <avoid_reuse> <descriptors> <load_on_startup> <external_signer>)
 ```
 
-**JSON-RPC Call:**
+#### Description
 
-```bash
-curl --user myusername --data-binary '{"jsonrpc": "1.0", "id":"curltest", "method": "createrawtransaction", "params": ["[{\"txid\":\"myid\",\"vout\":0}]", "{\"address\":0.01}"] }' -H 'content-type: text/plain;' http://127.0.0.1:51473/
-```
+Creates a new Kaon wallet. This action will shut down the current Kaon server. The parameters `wallet_name`, `disable_private_keys`, `blank`, `avoid_reuse`, `descriptors`, `load_on_startup` and `external_signer` are currently unused. You can specify a passphrase to encrypt the new wallet.
 
-### Error Handling:
+#### Arguments
 
-Errors might occur if the input JSON is malformed, the referenced UTXOs are invalid or spent, or the output addresses are incorrect. Specific error information is not available in the provided documentation.
+| Name                   | Type    | Required | Description                                                                                     |
+| ---------------------- | ------- | -------- | ----------------------------------------------------------------------------------------------- |
+| wallet\_name           | string  | No       | UNUSED                                                                                          |
+| disable\_private\_keys | boolean | No       | UNUSED                                                                                          |
+| blank                  | boolean | No       | UNUSED                                                                                          |
+| passphrase             | string  | No       | The passphrase to encrypt the wallet with. It must be at least 1 character, but should be long. |
+| avoid\_reuse           | boolean | No       | UNUSED                                                                                          |
+| descriptors            | boolean |          |                                                                                                 |
 
-### Notes:
 
-The created transaction is unsigned and needs to be signed using `signrawtransactionwithkey` or `signrawtransactionwithwallet` before being broadcasted to the network with `sendrawtransaction`. Setting a non-zero `locktime` also locktime-activates inputs.
 
-***
 
-### Command Name: createwallet
-
-### Synopsis:
-
-`kaon-cli createwallet <passphrase>`
-
-### Description:
-
-Creates and loads a new wallet. This shuts down the server. All other arguments specified in the documentation are marked as UNUSED.
-
-### Arguments:
-
-* **Name:** passphrase
-* **Type:** string
-* **Description:** The passphrase to encrypt the new wallet with.
-* **Required/Optional:** Required
-
-### Input:
-
-The command requires a passphrase as a string argument. All other arguments originally listed are unused.
-
-### Output:
-
-The command doesn't return a specific value upon success. The server will shut down after creating the wallet.
-
-### Examples:
-
-The original reference does not provide any examples, although the description of the `encryptwallet` command contains some `createwallet` context:
-
-```
-> kaon-cli createwallet "my pass phrase"
-```
-
-### Error Handling:
-
-Errors can occur if there are issues creating or loading the wallet, or problems with the server shutdown process. Detailed error information is not provided.
-
-### Notes:
-
-This command shuts down the server. After creating the wallet, you need to restart the server to use it. Ensure you have a secure passphrase.
-
-***
-
-### Command Name: decodemasternodebroadcast
-
-### Synopsis:
-
-`kaon-cli decodemasternodebroadcast "hexstring"`
-
-### Description:
-
-Decodes a hex-encoded masternode broadcast message (MNB), revealing the information contained within. Useful for verifying the contents of an MNB and for debugging masternode-related issues.
-
-### Arguments:
-
-* **Name:** hexstring
-* **Type:** string
-* **Description:** The hex-encoded masternode broadcast message.
-* **Required/Optional:** Required
-
-### Input:
-
-Accepts the hex-encoded MNB string as an argument.
-
-### Output:
-
-Returns a JSON object containing the decoded information from the MNB:
-
-* `vin`: The unspent transaction output (UTXO) used as collateral for the masternode.
-* `addr`: The IP address of the masternode.
-* `pubkeycollateral`: The public key of the collateral address.
-* `pubkeymasternode`: The masternode's public key.
-* `vchsig`: The Base64-encoded signature of the MNB.
-* `sigtime`: The timestamp of the signature.
-* `sigvalid`: A boolean ("true"/"false") indicating if the signature is valid.
-* `protocolversion`: The masternode's protocol version.
-* `nlastdsq`: Deprecated field related to mixing.
-* `nMessVersion`: The MNB message version number.
-* `lastping`: A JSON object containing information about the masternode's last ping, including the signing UTXO, block hash, signature time, validity, signature, and message version.
-
-### Examples:
-
-**CLI Usage:**
-
-```bash
-kaon-cli decodemasternodebroadcast <hexstring>
-```
-
-**JSON-RPC Call:**
-
-```bash
-curl --user myusername --data-binary '{"jsonrpc
-```
 
 ## Additional Resources
 
